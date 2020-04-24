@@ -203,7 +203,7 @@ class MultiAgentEnv(gym.Env):
         self.render_geoms_xform = None
 
     # render environment
-    def _render(self, mode='human', close=True):
+    def render(self, mode='human', close=False):
         if close:
             # close any existic renderers
             for i,viewer in enumerate(self.viewers):
@@ -233,6 +233,7 @@ class MultiAgentEnv(gym.Env):
                 #from gym.envs.classic_control import rendering
                 from multiagent import rendering
                 self.viewers[i] = rendering.Viewer(700,700)
+                print("test")
 
         # create rendering geometry
         if self.render_geoms is None:
