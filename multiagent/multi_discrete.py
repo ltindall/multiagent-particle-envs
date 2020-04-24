@@ -5,6 +5,7 @@ import numpy as np
 
 import gym
 
+
 class MultiDiscrete(gym.Space):
     """
     - The multi-discrete action space consists of a series of discrete action spaces with different parameters
@@ -29,6 +30,7 @@ class MultiDiscrete(gym.Space):
     def sample(self):
         """ Returns a array with one sample from each discrete action space """
         # For each row: round(random .* (max - min) + min, 0)
+
         random_array = np.random.RandomState().rand(self.num_discrete_space)
         return [int(x) for x in np.floor(np.multiply((self.high - self.low + 1.), random_array) + self.low)]
     def contains(self, x):
