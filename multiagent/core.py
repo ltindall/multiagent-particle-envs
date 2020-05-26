@@ -154,7 +154,7 @@ class World(object):
                     min_dist = entity_a.size + entity_b.size
                     self.min_dists[ia, ib] = min_dist
                     self.min_dists[ib, ia] = min_dist
-
+        # calculate distances between each entity 
         for ia, entity_a in enumerate(self.entities):
             for ib in range(ia + 1, len(self.entities)):
                 entity_b = self.entities[ib]
