@@ -93,6 +93,13 @@ class Viewer(object):
         self.window.switch_to()
         self.window.dispatch_events()
         self.transform.enable()
+        # label = pyglet.text.Label('Hello, world',
+        #                   font_size=1,
+        #                   x=0,y=0,
+        #                   #x=self.window.width//2, y=self.window.height//2,
+        #                   anchor_x='center', anchor_y='center', color=(0,0,0,255))
+        # label.draw()
+        #self.add_geom(DrawText("hello world"))
         for geom in self.geoms:
             geom.render()
         for geom in self.onetime_geoms:
@@ -153,6 +160,15 @@ def _add_attrs(geom, attrs):
         geom.set_color(*attrs["color"])
     if "linewidth" in attrs:
         geom.set_linewidth(attrs["linewidth"])
+
+class DrawText:
+    def __init__(self, text):
+        self.label = pyglet.text.Label(text, font_size=1,
+                          x=0, y=0, anchor_x='center', anchor_y='center',
+                          color=(0,0,0,255)
+                        )
+    def render(self):
+        self.label.draw()
 
 class Geom(object):
     def __init__(self):
