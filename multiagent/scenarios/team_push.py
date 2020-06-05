@@ -130,6 +130,12 @@ class Scenario(BaseScenario):
             return 0
 
 
+    def is_pushing(self, agent, landmark): 
+        delta_pos = agent.state.p_pos - landmark.state.p_pos 
+        dist = np.sqrt(np.sum(np.square(delta_pos)))
+        dist_min = agent.size + landmark.size
+        return True if dist < dist_min else False 
+
     def is_collision(self, agent1, agent2):
         delta_pos = agent1.state.p_pos - agent2.state.p_pos
         dist = np.sqrt(np.sum(np.square(delta_pos)))
@@ -167,6 +173,8 @@ class Scenario(BaseScenario):
 
         reward = 0 
         for m in moveable_landmarks: 
+            if self.is_pushing(agent, m):
+                reward += 0.5
             reward -= min([np.sqrt(np.sum(np.square(m.state.p_pos - g.state.p_pos))) for g in goal_landmarks])
 
         return reward
