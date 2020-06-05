@@ -85,6 +85,7 @@ class Scenario(BaseScenario):
             landmark.collide = True
             landmark.movable = True
             landmark.size = 0.15
+            landmark.initial_mass = 2
             landmark.boundary = False
             landmark.color = np.array([0.25, 0.25, 0.95]) # blue
             world.landmarks.append(landmark)
@@ -172,6 +173,7 @@ class Scenario(BaseScenario):
         goal_landmarks = self.goals(world)
 
         reward = 0 
+        reward -= min([np.sqrt(np.sum(np.square(agent.state.p_pos - m.state.p_pos))) for m in moveable_landmarks])
         for m in moveable_landmarks: 
             if self.is_pushing(agent, m):
                 reward += 0.5
@@ -197,6 +199,12 @@ class Scenario(BaseScenario):
         return rew
 
     def observation(self, agent, world):
+
+        move_goal_pos = []
+        for m in self.moveable(world): 
+            for g in self.goals(world): 
+                move_goal_pos.append(m.state.p_pos - g.state.p_pos)
+
         # get positions of all entities in this agent's reference frame
         entity_pos = []
         for entity in world.landmarks:
@@ -212,4 +220,4 @@ class Scenario(BaseScenario):
             other_pos.append(other.state.p_pos - agent.state.p_pos)
             if other.agent_type != 'adversary':
                 other_vel.append(other.state.p_vel)
-        return np.concatenate([agent.state.p_vel] + [agent.state.p_pos] + entity_pos + other_pos + other_vel)
+        return np.concatenate([agent.state.p_vel] + [agent.state.p_pos] + entity_pos + other_pos + other_vel + move_goal_pos)
